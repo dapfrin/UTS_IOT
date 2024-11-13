@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hydroponic Monitoring System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(45deg, #2d3a60, #1c2a47, #112240);
+      color: #e3e8f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: 20px;
+      position: relative;  /* Needed for absolute positioning */
+    }
+
+    h1 {
+      font-size: 42px;
+      color: #00d1b2;
+      text-shadow: 0 0 15px rgba(0, 209, 178, 0.8);
+      margin-bottom: 20px;
+    }
+
+    .intro {
+      font-size: 18px;
+      color: #b3b9d3;
+      margin-bottom: 40px;
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    label {
+      font-size: 18px;
+      color: #ccc;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin: 0;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    input[type="range"]:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    button {
+      background: linear-gradient(45deg, #00d1b2, #32ff7e);
+      color: #fff;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 18px;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, background 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 209, 178, 0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #32ff7e, #00d1b2);
+      transform: scale(1.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    th {
+      background: rgba(0, 209, 178, 0.6);
+      color: #fff;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    td {
+      background: rgba(255, 255, 255, 0.2);
+      color: #bbb;
+      font-size: 16px;
+    }
+
+    .button-group {
+      margin-top: 20px;
+    }
+
+    .fetch-button {
+      background: linear-gradient(45deg, #ff9a8b, #ff6a88);
+      color: #fff;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .fetch-button:hover {
+      background: linear-gradient(45deg, #ff6a88, #ff9a8b);
+      transform: scale(1.05);
+    }
+
+    /* New style for positioning the intro content in the top-right */
+    .intro {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 18px;
+      color: #b3b9d3;
+      text-align: right;
+    }
+
+  </style>
+  <!-- Importing Google Fonts for futuristic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Hydroponic Monitoring System</h1>
+
+  <div class="intro">
+    <p><strong>Dhafin Fauzan Purnomoputra</strong></p>
+    <p>NRP 15-2022-185</p>
+  </div>
+
+  <div class="container">
+    <!-- Form for sending data -->
+    <div class="card">
+      <form id="data-form">
+        <label for="temperature">Temperature:</label>
+        <input id="temperature" type="range" min="0" max="100" />
+        <label for="humidity">Humidity:</label>
+        <input id="humidity" type="range" min="0" max="100" />
+        <label for="brightness">Brightness:</label>
+        <input id="brightness" type="range" min="0" max="100" />
+        <button type="submit">SEND DATA</button>
+      </form>
+    </div>
+
+    <!-- Table displaying data -->
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Suhu</th>
+            <th>Kelembapan</th>
+            <th>Kecerahan</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="data-table"></tbody>
+      </table>
+    </div>
+
+    <!-- Button to fetch and display data -->
+    <div class="button-group">
+      <button id="data-button" class="fetch-button" type="button">FETCH DATA</button>
+    </div>
+  </div>
+
+  <script>
+    // Handle data form submission
+    document.querySelector("#data-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const data = {
+        temperature: form.temperature.value,
+        humidity: form.humidity.value,
+        brightness: form.brightness.value,
+      };
+
+      fetch("/api/data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(() => alert("Data successfully submitted"))
+      .catch(() => alert("Error submitting data"));
+    });
+
+    // Handle fetching and displaying data
+    const dataTable = document.querySelector("#data-table");
+
+    document.querySelector("#data-button").addEventListener("click", () => {
+      fetch("/api/stats")
+        .then(response => response.json())
+        .then(data => {
+          const entries = data["temperature_humidity_brightness_data"];
+          if (!entries) return alert("Failed to load data!");
+
+          dataTable.innerHTML = "";
+          entries.forEach(entry => {
+            const row = document.createElement("tr");
+            Object.values(entry).forEach(value => {
+              const cell = document.createElement("td");
+              cell.textContent = value;
+              row.appendChild(cell);
+            });
+            dataTable.appendChild(row);
+          });
+        });
+    });
+  </script>
+</body>
+</html>
